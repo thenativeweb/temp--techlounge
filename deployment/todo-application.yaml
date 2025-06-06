@@ -1,0 +1,65 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: todo
+  namespace: todo
+spec:
+  selector:
+    matchLabels:
+      app: todo
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: todo
+    spec:
+      containers:
+        - name: todo
+          image: thenativeweb/techlounge:1.0.0
+          env:
+            - name: ESDB_URL
+              value: http://database
+            - name: ESDB_API_TOKEN
+              value: secret
+          ports:
+            - name: http
+              containerPort: 4000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: todo
+  name: todo
+spec:
+  selector:
+    app: todo
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: todo
+  name: todo
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: todo.techlounge.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: todo
+                port:
+                  name: http

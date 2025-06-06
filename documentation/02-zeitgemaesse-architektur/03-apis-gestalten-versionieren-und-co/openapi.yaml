@@ -1,0 +1,85 @@
+openapi: 3.1.0
+
+info:
+  title: To-Dos
+  description: Manage your personal to-do list
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+
+paths:
+  /memorize-to-do:
+    post:
+      summary: Memorizes a to-do
+      tags:
+        - Command
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  examples:
+                    - "Buy groceries"
+                    - "Finish project report"
+                description:
+                  type: string
+                dueDate:
+                  type: string
+                  format: date-time
+              required:
+                - title
+                - description
+                - dueDate
+              additionalProperties: false
+
+      responses:
+        "200":
+          description: The to-do was memorized successfully
+        "401":
+          description: The request was not authorized
+
+  /pending-to-dos:
+    get:
+      summary: Gets all pending to-dos
+      tags:
+        - Query
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: A list of all pending to-dos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    dueDate:
+                      type: string
+                      format: date-time
+                  required:
+                    - title
+                    - description
+                    - dueDate
+                  additionalProperties: false
+        "401":
+          description: The request was not authorized
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

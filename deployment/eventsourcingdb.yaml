@@ -1,0 +1,48 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: database
+  namespace: todo
+spec:
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: thenativeweb/eventsourcingdb:1.0.2
+          ports:
+            - name: http
+              containerPort: 3000
+          args: [
+            "run",
+            "--api-token",
+            "secret",
+            "--data-directory-temporary",
+            "--http-enabled",
+            "--https-enabled=false",
+          ]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: todo
+  name: database
+spec:
+  selector:
+    app: database
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
