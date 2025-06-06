@@ -33,6 +33,10 @@ jobs:
         run: |
           git tag v${{ steps.get_next_version.outputs.version }}
           git push origin v${{ steps.get_next_version.outputs.version }}
+      - name: Build artifacts
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          make build
       - name: Release new version
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         uses: ncipollo/release-action@v1
