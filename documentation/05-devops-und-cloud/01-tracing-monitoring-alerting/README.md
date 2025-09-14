@@ -1,0 +1,99 @@
+# Tracing, Monitoring und Alerting
+
+- Zwei Arten von Problemen
+  - Bekannte Probleme
+    - CPU > 90%
+    - RAM > 90%
+    - Monitoring
+  - Unbekannte Probleme
+    - Warum dauert Bestellung XY so lange?
+    - Observability
+  - MTTR (Mean Time To Recovery) möglichst gering
+
+- Signale
+  - Logs (basieren auf Ereignissen)
+    - Best-Practices
+      - Structured logs (siehe zB `slog`)
+      - Vorsicht mit sensiblen Daten (Passwörter, …)
+      - Kontext mitliefern
+  - Metriken (basieren auf Zahlenreihen)
+    - Typen
+      - Counter (zählt nur nach oben)
+      - Gauge (aktuelle Wert)
+      - Histogram (Verteilung in Buckets)
+      - Summaries (statistische Werte)
+    - Best-Practices
+      - Nicht einfach irgendwelche Metriken erstellen
+      - Sondern vom Ziel her denken
+      - Sinnvolle Labels, die nicht "explodieren"
+        - Also zB nicht `request_count_${userID}`
+  - Traces (besteht aus Spans, verteilt)
+    - Best-Practices
+      - Traces haben eine ID
+      - Trace-IDs müssen weitergereicht werden (Context-Propagation)
+
+- Tools
+  - Prometheus
+    - Zeitreihen-Datenbank, Metriken sammeln, Alerts, …
+    - Pull-Ansatz
+    - Exporter als Adapter für Systemdaten
+  - Grafana
+    - Visualisierung, Dashboards, Alerts, …
+  - Jaeger
+    - Tracing-Analyse, Spans, Visualisierung, …
+  - OpenTelemetry
+    - Offener Standard für Metriken
+
+- Tracing
+  - Trace
+    - Fährte / Spur in Bezug auf einen fachlichen Vorgang, über alle technischen Layer hinweg
+    - Hat eine ID, die sogenannte Trace-ID
+  - Span
+    - Abschnitt innerhalb eines Traces
+    - Zeitliche Reihenfolge innerhalb des Traces
+    - Parent/Child-Beziehung
+  - Context-Propagation
+    - ZB über HTTP-Header `traceparent`
+  - Welche Daten gehören in einen Trace / Span?
+    - Latenz: Wo verbringt die Anfrage Zeit?
+    - Fehler: Wo passieren unerwartete Dinge?
+    - Retries: Wie oft müssen Dinge wiederholt werden?
+  - Strategien zur dauerhaften Speicherung von Traces
+    - Head-Based Sampling (beim Start des Traces entscheiden, ob man ihn überhaupt erfassen möchte)
+      - Vorteil: Wenig Aufwand
+      - Nachteil: Fehler werden eventuell übersehen
+    - Tail-Based Sampling (nach dem Erfassen des Traces entscheiden, ob man ihn speichern möchte)
+      - Vorteil: Alle Fehler sichtbar
+      - Nachteil: Hohen Aufwand, mehr Ressourcen
+
+- Alerts
+  - Automatische Benachrichtigung über Abweichungen
+  - Gewünscht ist eine "gute" Signal-Noise-Ratio
+  - Zwei Arten von Alerts
+    - Symptom-Alerts
+      - Anwenderin / Anwender nimmt das Problem wahr
+      - Priorität "Critical"
+    - Ursachen-Alerts
+      - Technische Faktoren
+      - Priorität "Warning"
+  - Best-Practices
+    - Klare Regeln: Wenn X, dann Alert
+    - Runbook-Links in die Alerts integrieren
+    - Klare Verantwortlichkeiten
+
+- Zu beachten in der Cloud
+  - Elastisches, flexibles und skalierbares Umfeld
+  - Ephemerale Ressourcen
+  - Mehr Services, mehr Instanzen, AZs, …
+  - Multi-Mandanten-Betrieb
+  - Datenvolumen und Speicherkosten
+  - Bei SaaS-Diensten auf Exit-Hürde achten
+  - Gegebenenfalls lokal aggregieren, und dann global speichern
+
+- Ziele
+  - Nachvollziehbarkeit, Wartbarkeit
+  - Verbesserungen in der Praxis
+    - Debugging, um die MTTR zu senken
+    - Fehlerprävention
+    - Release-Sicherheit, um Brüche nach Deployments zu erkennen
+    - Kommunikation, zB zwischen Dev und Ops
