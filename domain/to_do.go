@@ -12,7 +12,7 @@ type ToDo struct {
 	IsCompleted bool
 }
 
-func NewTodo(id uuid.UUID) *ToDo {
+func NewToDo(id uuid.UUID) *ToDo {
 	return &ToDo{
 		ID:          id,
 		IsCompleted: false,
