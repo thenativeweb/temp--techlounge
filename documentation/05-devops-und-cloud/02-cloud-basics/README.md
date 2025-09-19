@@ -1,0 +1,113 @@
+# Cloud-Basics: Infrastruktur und Services
+
+- Was ist Cloud?
+  - Service-Modelle
+    - * as a Service
+    - IaaS: Infrastructure (VMs)
+    - PaaS: Platform (Betriebssystem, Laufzeitumgebungen, …)
+      - FaaS: Function (aka Serverless)
+    - SaaS: Software (Anwendungen, Services, …)
+      - BaaS: Backend as a Service
+      - DBaaS: Database as a Service
+  - Deployment-Modelle
+    - Public Cloud (AWS, Azure, GCP, Digital Ocean, Scaleway, SysEleven, …)
+    - Private Cloud (Cloud-Infrastruktur auf eigener Hardware)
+    - Hybrid Cloud
+
+- Verantwortung
+  - Was übernimmt der Cloud-Anbieter?
+  - Was macht man selbst?
+
+- Globale Infrastruktur
+  - Regions (Geografische Verteilung für niedrige Latenz)
+  - Availability Zones (AMS1, AMS2, …, für Ausfallsicherheit)
+
+- Angebote in der Cloud
+  - VMs
+  - Kubernetes
+  - Container
+  - Images
+  - IP-Adressen
+  - Load-Balancer
+  - Datenbanken
+  - Storage
+  - S3 (Simple Storage Service)
+  - Message-Queues
+  - E-Mail-Versand
+  - Funktionen (FaaS / Serverless)
+  - Sicherheit
+    - Identity and Access Management (IAM)
+    - Key Management Services (KMS)
+  - Logs, Metriken, Traces, Alerting, …
+  - …
+
+- Infrastructure as Code (IaC)
+  - Reproduzierbarkeit, Versionierung, Nachvollziehbarkeit, …
+  - Soll- vs Ist-Zustand, deklarativ statt imperativ
+  - Beispielprodukte
+    - Terraform
+      - https://www.hashicorp.com/de/products/terraform
+      - Typische Befehle
+        - `tf init`: Neues Projekt initialisieren
+        - `tf plan`: Konfiguration planen und vorbereiten
+        - `tf apply`: Konfiguration tatsächlich anwenden
+        - `tf destroy`: Konfiguration löschen
+    - Pulumi
+      - https://www.pulumi.com/
+
+- Welchen Cloud-Anbieter nutzen?
+  - Funktionalität / Funktionsumfang
+  - Herkunft des Anbieters / Vertragspartners
+  - Regionen
+  - Preisstruktur
+  - Support
+  - Know-How im eigenen Unternehmen
+  - Vendor Lock-In
+
+- Beispiel
+  - Bausteine
+    - Stateless-HTTP-Service
+    - Datenbank
+  - Datenbank
+    - In einer VM
+      - Manuelle Lifecycle-Management
+      - Daten lokal in der VM
+    - Als Container
+      - Lifecycle-Management
+      - Block-Storage
+      - Kubernetes
+        - StatefulSet (weil Datenbank nicht stateless)
+        - PersistentVolume / PersistentVolumeClaim
+    - Gemanaged
+      - ESDB as a Service (ESDBaaS)
+      - Updates, Backups, Monitoring, … alles inklusive
+    - Lösung
+      - Entweder VM oder Managed
+      - Im Wesentlichen Kostenfrage bzw. Regionsfrage
+  - Service / Backend
+    - In einer VM
+      - Skalierbarkeit nur manuell
+      - Unter Umständen großer Server, kleine Anwendung, teuer
+    - Als Container
+      - Zero-Downtime-Updates
+      - Einfache Skalierbarkeit
+      - Lifecycle-Management
+    - Lösung
+      - Als Container, über Kubernetes
+  - Lohnt sich dafür Terraform?
+    - Nein
+    - Es genügt eine Manifest-Datei für Kubernetes
+  - Ablauf beim Service
+    - Git-Repository, wo der Code eingecheckt wird
+      - `git push` startet CI/CD-Pipeline
+        - Kompilieren, Tests, Codeanalyse, …
+        - Docker-Image bauen
+        - Docker-Image in Registry ablegen
+    - Prozess zum Deployen
+      - Einfaches Shellskript
+      - Gewünschte Version (die von Hand angegeben wurde) in das Manifest eintragen
+      - `kubectl apply`
+      - Ggf Tools wie ktmpl (https://github.com/aimotrens/ktmpl) nutzen
+    - Verbindung zwischen Planning und Execution
+      - Irgendeine Art von Trigger
+      - Button, ChatOps, SMS, …
