@@ -41,7 +41,7 @@ func Handle(client *eventsourcingdb.Client) http.HandlerFunc {
 		// taking events back, and writing them to the database
 		// should happen there. This is a bit of a mess right now.
 
-		todo := domain.NewTodo(id)
+		todo := domain.NewToDo(id)
 		toDoMemorized, err := todo.Memorize(intention, details)
 		if err != nil {
 			logging.Error("failed to memorize todo", "error", err)
