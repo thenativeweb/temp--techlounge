@@ -1,0 +1,75 @@
+# Sicherheit in der Cloud
+
+- Grundkonflikt: Technik vs Mensch
+- Cloud
+  - Geteilte Verantwortung
+  - Angriffsflächen
+    - Physische Sicherheit
+    - Verwaltungsoberfläche
+    - APIs
+    - CI/CD-Pipelines
+    - Konfigurationsdateien
+    - Lokal abgelegte Zugangsdaten
+    - Tokens
+    - Phishing
+  - DSGVO, Vertragsverletzungen, Betriebsunterbrechungen, …
+- Grundprinzipien
+  - Defense in Depth
+  - Least Privilege
+  - Sicherheit als Prozess
+- Identitäten
+  - Getrennte Accounts für verschiedene Personen
+  - Getrennte Accounts für verschiedene Rollen
+  - Getrennte Accounts für Menschen und Maschinen
+  - Getrennte Accounts für verschiedene Umgebungen
+- Sicherheit dokumentieren
+  - Wer, wann, was, warum
+  - Unveränderlich, im Sinne eines Audit-Logs
+  - Eventuell auf Event-Sourcing basieren
+- Weitere Maßnahmen
+  - Verpflichtende 2FA
+  - Single-Sign-On (SSO)
+  - Secret-Management
+  - Monitoring und Alerting
+- Verschlüsselung
+  - Data at Rest
+    - Storage, Persistenz & Co.
+    - Dateien, Datenbanken, Backups, Object-Storage (S3), …
+    - AES (Advanced Encryption Standard)
+      - Symmetrisches Verfahren
+      - AES-256
+        - ECB: Electronic Code Book (nicht verwenden)
+        - CBC: Cipher Block Chaining (gängiger Standard)
+        - GCM: Galois Counter Mode (zukünftiger (?) Standard)
+      - Achtung: Harvest today, decrypt later
+      - Idee: Homomorphe Verschlüsselung
+        - hallo => HALLO (-32)
+        - hallo => ibmmp => IBMMP => HALLO (-32)
+  - Data in Flight
+    - Netzwerke
+    - HTTP(S)-Verbindungen, gRPC, GraphQL, VPN, …
+    - HTTPS
+      - Erzwingen, kein HTTP zulassen
+      - Let's Encrypt + Cert-Manager
+      - mTLS (Mutual TLS, für Server-zu-Server-Verbindungen)
+      - HSTS-Header
+    - RSA (Rivest Shamir Adleman)
+      - Asymmetrisches Verfahren
+      - RSA-2048 / RSA-4096
+        - Oder: ECC (Elliptic Curve Cryptography)
+  - Typische Verschlüsselungsfehler
+    - Nicht alles wird verschlüsselt (Backups, Testressourcen, …)
+    - Abgelaufene oder selbst-signierte Zertifikate
+    - Secrets in Logs, Crashdumps, …
+- Netzwerke schützen
+  - Server und Services möglichst isolieren
+    - Firewalls und Routing-Regeln
+    - In Kubernetes zB
+      - Eigene Namespaces pro Anwendung
+      - Deny-All-Network-Policy für jeden Namespace
+        - Eingehender Traffic (Ingress)
+        - Ausgehender Traffic (Egress)
+- Datenschutz / Compliance
+  - DSGVO (Löschkonzepte, Data Processing Agreement (DPA), Datenminimierung, Zweckbindung, …)
+  - Zutrittskontrollen für Rechenzentren
+  - Data Sovereignity
