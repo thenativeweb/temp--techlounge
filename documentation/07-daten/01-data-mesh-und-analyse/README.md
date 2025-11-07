@@ -1,0 +1,71 @@
+# Data-Mesh und Analyse
+
+- OLTP (Online Transaction Processing)
+  - Optimiert für viele kleine einzelne Transaktionen
+  - Fokus auf dem Schreiben, normalisierte Schemas
+  - ACID-Prinzipien, klassische relationale Datenbanken
+- OLAP (Online Analytical Processing)
+  - Optimiert für komplexe Queries über viele Daten
+  - Fokus auf dem Lesen, denormalisierte Schemas
+  - Column-Stores
+- Data-Warehouse
+  - Zentrales OLAP-System, was alle Daten enthält
+  - Star Schema
+    - https://www.databricks.com/sites/default/files/2024-04/star-schema-2x.png
+  - Probleme
+    - Zentrale Datenhaltung als Flaschenhals
+    - Daten-Team skaliert nicht mit den Produkt-Teams
+- Data-Lake
+  - "Store everything, figure it out later"
+  - Höhere Performance beim Speichern als im Data-Warehouse
+  - Probleme
+    - Unübersichtlich, unwartbar, unkontrolliert
+    - Wird schnell zu einem Data-Swamp
+- Data-Lakehouse
+  - Best of both worlds (?)
+  - Probleme
+    - Zentrales Bottleneck, skaliert nicht
+    - Keiner weiß so genau, was alles da ist
+- Data-Mesh
+  - Das fachliche Team ist für die Daten verantwortlich (Domain-oriented Data Ownership)
+  - Daten müssen als Produkt bereitgestellt werden (Data as a Product)
+    - Qualität, Dokumentation, APIs, Support, …
+    - Ganz klare Trennung zwischen Daten-Anbieter und -Verwender
+  - Eine gemeinsame Plattform als Basis für alle fachlichen Teams (Self-serve Data Platform)
+    - Server, Storage, ...
+    - CI/CD-Pipeline
+    - Entwicklungsprinzipien und -richtlinien auch auf Daten-APIs anwenden
+  - Standards und normierte Prozesse (Federated Computational Governance)
+
+- Business-Intelligence (BI)
+  - Daten in Erkenntnisse und Empfehlungen verwandeln
+  - Daten-Pipeline
+    - Rohdaten -> Aufbereitung -> Visualisierung -> Entscheidung
+  - Business-Intelligence ist deskriptiv
+    - "was ist passiert"
+    - Bekannte Fragen beantworten
+    - Reports sind regelmäßig, automatisiert, standardisiert, basieren auf KPIs (Key-Performance-Indikatoren)
+    - Analytics sind ad-hoc, explorativ, entdecken statt berichten
+  - Data-Science ist präskriptiv
+    - "was wird passieren"
+    - Muster entdecken
+  - Dashboard
+    - Wichtigste Metriken zuerst (Above the Fold)
+    - Kontext durch Vergleiche (Trends zeigen, nicht nur die Momentaufnahme)
+    - Drill-Down für Details ermöglichen
+  - KPIs
+    - Nicht alles messen, was ist wirklich wichtig?
+    - North Star Metric als Leitmetrik
+  - SQL als *die* Business-Intelligence-Sprache
+    - Window-Functions (`LAG`, Moving-Averages, …)
+    - CTEs (Common Table Expressions)
+
+- Data Governance
+  - Compliance und DSGVO
+  - Konsistenz über Teams und Services hinweg
+  - Transparenz über Datenherkunft und -veränderung
+- Data Catalog
+  - Zentrale Registry für alle Daten-APIs
+  - Wie eine Service-Registry, aber für Datenmodelle
+  - Schema-Versionierung und -Kompatibilität
+  - Sicherheit
