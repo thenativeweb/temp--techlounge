@@ -1,0 +1,108 @@
+# Datenflüsse optimieren
+
+- OLTP vs OLAP
+  - OLTP: Normalisierung, Write-Heavy, Millisekunden
+  - OLAP: Denormalisierung, Read-Heavy, Sekunden
+    - OLTP-OLAP-Gap
+  - Data-Pipeline
+    - Verbindung von OLTP zu OLAP, inklusive Transformation
+
+- Klassische Data-Pipeline
+  - Daten aus OLTP laden, transformieren, Daten in OLAP speichern
+  - Extract, Transform, Load (ETL, 1990er und 2000er)
+    - Transform als Nightly-Job wegen hohem Aufwand
+    - Fehlender Flexibilität
+    - Veraltete Daten im OLAP-System, OLAP nur zeitweise verfügbar
+  - Extract, Load, Transform (ELT, ab ~2005/2010)
+    - Bei ELT werden die Roh-(!)-Daten in OLAP gespeichert
+    - Geht einher mit dem Wechsel von Data Warehouse zu Data Lake, nur möglich dank elastischer Skalierbarkeit in der Cloud
+    - Ad-Hoc-Ergebnisse auf (halbwegs) aktuellen Daten
+    - Weitaus höhere Flexibilität dank Rohdaten
+
+- ETL vs ELT – was wann?
+  - ETL
+    - Für sensitive, sensible Daten
+    - On-Premise-Warehouse mit begrenzten Ressourcen
+    - Komplexe Logik, die nicht ad-hoc ausgeführt werden soll
+  - ELT
+    - Standard für Cloud-basierte Data Warehouses
+    - Wenn Rohdaten-Speicherung erlaubt ist
+    - Wenn Flexibilität wichtiger ist als Dauer der Abfrage und als Speicherplatz
+  - ElT
+    - Best-of-both-worlds
+    - Leichtgewichtige Transformation vor dem Load
+    - Die eigentliche Transformation nach dem Load
+    - Für mehr Flexibilität, aber Schutz von sensitiven Daten
+
+- Daten-Pipeline-Architektur
+  - Aufbau
+    - Datenquelle(n)
+    - Ingestion-Layer (Extract)
+    - Data-Warehouse (Load)
+    - Transformation-Layer (Transform)
+    - Analytics
+  - Übergeordnet
+    - Orchestration-Layer
+    - Workflow as Code
+
+- Wie ermittelt man, was sich seit dem letzten Extract verändert hat?
+  - Change Data Capture (CDC)
+  - Über das Datenbank-interne (technische) Log ermitteln, was sich geändert hat
+  - CDC ist Event-Sourcing "auf Wish bestellt" :-D
+    - Es fehlt die fachliche Perspektive
+    - Es ist eine rein technische Abbildung von Änderungen
+
+- DuckDB als In-Process-In-Memory-OLAP-Datenbank
+  - Quasi wie SQLite, aber für OLAP
+  - Übernimmt teilweise Aufgaben aus dem Ingestion-Layer
+  - Links
+    - https://github.com/marcboeker/go-duckdb/issues/279
+    - https://github.com/duckdb/duckdb-go
+
+- Datenqualität
+  - Kurzfassung: Garbage In, Garbage Out
+  - Kriterien
+    - Accuracy: Sind die Werte korrekt?
+    - Completeness: Fehlen Werte?
+    - Consistency: Widersprechen sich die Werte?
+    - Timeliness: Sind die Daten aktuell?
+    - Validity: Entsprechen Werte dem Schema?
+    - **Content: Spiegeln die Daten das wider, was man wissen möchte?** (das ist das Fachliche, was von allem am wichtigsten ist)
+  - Datenqualität prüfen
+    - Bei der Erfassung
+    - Bei der Extraction
+    - Bei der Transformation
+    - Beim Loading
+
+- Batch- vs Stream-Processing
+  - Batch
+    - Wöchentliche / tägliche Reports
+    - Aggregation über historische Daten
+  - Stream
+    - Echtzeit-Analysen
+    - Fraud-Detection, Alerting, Operational Metrics
+  - Lambda-Architektur
+    - Batch-Layer: Vollständige, korrekte Daten
+    - Speed-Layer: Schnelle, approximative Daten
+    - Serving-Layer: Kombiniert beide
+
+- Best Practices
+  - Idempotenz von Transformationen beachten
+  - Validieren, Schemata, Testen, …
+  - Batch-Processing
+    - Zeitumstellung beachten!
+    - Batch-Windows dürfen nicht zu lang werden
+  - Stream-Processing
+  - Optimierung
+    - Kosten, Flexibilität, Aufwand im Blick behalten
+    - Hot- vs Cold-Data
+  - Datenmenge
+    - Inkrementell statt volles Datenset
+    - Komprimierende Dateiformate
+    - Datentransfers sind teuer
+    - Code zu den Daten schieben, nicht umgekehrt
+  - Health, Metriken, Alerting, Monitoring, Logging, …
+  - Daten-Nachvollziehbarkeit
+  - Fehlerbehandlung
+    - Retry, Circuit-Breaker, partielle Fehler?
+    - Recovery-Strategien
