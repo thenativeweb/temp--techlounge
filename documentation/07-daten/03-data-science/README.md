@@ -1,0 +1,112 @@
+# Data-Science
+
+- Business Intelligence (BI) vs Data-Science (DS)
+  - BI: Deskriptiv, "was ist passiert"
+  - DS: Prediktiv, "was wird passieren"
+  - DS: Preskriptiv, "was sollten wir tun"
+- Data-Science ist interdisziplinär
+  - Statistik
+  - Programmierung
+  - Domänenwissen
+- Statistik
+  - Mittelwert (Mean)
+    - 30k, 35k, 40k, 200k => 76k (sensibel gegen Ausreißer)
+  - Median (Median)
+    - 30k, 35k, 40k, 200k => 37.5k
+  - Modus (Mode)
+    - Welcher Wert kommt am häufigsten vor?
+  - Varianz
+    - Der Abstand vom Mittelwert
+    - 30k, 35k, 40k
+      - Abstände ermitteln: -5k, 0, 5k
+      - Quadrieren: 25k, 0, 25k
+      - Durchschnitt: 16,6k^2 <- Varianz in Quadrat-Euro
+    - Wurzel
+      - Ungefähr 4,1k <- Standardabweichung in Euro
+      - Bei einer Normalverteilung liegen ungefähr 68% aller Werte innerhalb der Standardabweichung
+  - Normalverteilung
+    - Die meisten Werte liegen in der Mitte
+    - Je weiter weg ein Wert von der Mitte ist, desto unwahrscheinlicher ist er
+    - Symmetrische Verteilung
+    - Die 68-95-99,7-Regel
+      - 68% der Werte: Durchschnitt ± 1 * Standardabweichung
+      - 95% der Werte: Durchschnitt ± 2 * Standardabweichung
+      - 99,7% ...: Durchschnitt ± 3 * Standardabweichung
+  - Korrelation
+    - Maß für den linearen Zusammenhang zwischen Variablen
+    - r = 0 -> keine Korrelation
+    - r = +1 -> positive Korrelation
+    - r = -1 -> negative Korrelation
+  - Korrelation vs Kausalität
+    - Bloß weil etwas korreliert, gibt es noch keinen kausalen Zusammenhang
+    - Eine dritte Variable, die sowohl A und B beeinflusst, nennt man Confounder
+- Stochastik
+  - P(Event): 0 <= P <= 1
+    - Würfel: P(6) = 1/6 = 0.167
+    - P(Spam) = 0.95
+  - P(A oder B): P(A) + P(B) - P(A und B)
+  - P(A und B): P(A) * P(B)
+  - Bedingte Wahrscheinlichkeit
+    - P(A | B): Wie hoch ist P(A), wenn B bereits eingetreten ist?
+    - P(A | B) = P(A und B) / P(B)
+    - P(A | B) = P(B | A) * P(A) / P(B)
+  - Beispiel
+    - 10.000 Menschen, 1% krank: 100 krank, 9.900 gesund
+    - Test, 99%, bei kranken: 99% positiv, 1% negativ
+    - Test, 99%, bei gesunden: 99 falsch–positiv, 9.801 negativ
+    - Positiv insgesamt: 99 + 99 = 198
+    - P(krank | positiv) = 99 / 198 = 50%
+- Bias und Varianz
+  - Bias ist eine konsistente Verzerrung in eine Richtung
+  - Varianz ist die Streuung
+  - Gesucht ist niedriger Bias + niedrige Varianz
+
+- Unsupervised Learning
+  - Typische Anwendungsfälle
+    - Clustering
+    - Anomaly Detection
+    - Dimensionality Reduction
+  - k-Means als Beispielalgorithmus
+    - Grundidee
+      - Teile Daten in k Gruppen (Cluster)
+      - Jede Gruppe hat einen Mittelwert (Centroid)
+      - Alle Daten gehören zum nächstgelegenen Mittelwert
+    - Ablauf
+      - k Centroide zufällig (!) wählen
+      - Cluster um Centroiden bilden
+      - k neue Centroiden als Mittelpunkte der Cluster berechnen
+      - Iterieren, bis entweder Cluster stabil sind, oder bis maximale Anzahl von Iterationen erreicht wurde
+
+- Supervised Learning
+  - Lernen mit Feedback
+  - Idee
+    - Trainingsdaten
+      - Daten + Ergebnisse
+      - Features + Labels
+      - Modell lernt im Prinzip f: f(x) = y
+    - Beispiel
+      - x = E-Mails, y = Spam oder kein Spam
+      - Auf 10.000 E-Mails eine Funktion dafür generieren (Training)
+      - Hoffnung: Vorhersage für neue E-Mails, ob Spam oder kein Spam
+  - Anwendungsfälle / Arten von Problemen
+    - Klassifikation (y ist eine Kategorie)
+      - Logistische Regression
+    - Regression (y ist eine Zahl)
+      - Lineare Regression (y = m * x + b)
+      - Multiple lineare Regression
+  - Overfitting vs Underfitting
+    - Wie sieht die richtige Balance aus?
+    - Split von Trainings- und Testdaten
+
+- Decision Trees
+  - Einzige existierende Variante von "Explainable AI" (XAI)
+  - Ziel sind möglichst kompakte Bäume mit wenigen Fragen
+  - Können berechnet werden
+- Genetischer Algorithmus
+  - Ablauf
+    - Wir raten n verschiedene Funktionen, die ein Problem lösen sollen
+    - Wir messen die Qualität der n Funktionen
+    - Schlechte Funktionen sortieren wir aus
+    - Gute Funktionen rekombinieren wir
+    - So entstehen neue Funktionen
+    - Funktionen können auch mutieren
