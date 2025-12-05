@@ -32,3 +32,7 @@
 - HTML-Templates
   - Das `<template>...</template>`-Element
   - Erfordert das Klonen von Knoten im DOM, fühlt sich an wie 1995
+
+## Links
+
+- https://rgbcu.be/blog/gitignore/

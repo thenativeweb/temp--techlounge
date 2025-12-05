@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"declaration": true,
+		"experimentalDecorators": true,
+		"esModuleInterop": true,
+		"lib": ["DOM", "ES2023"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noEmit": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"target": "ES2022",
+		"useDefineForClassFields": false
+	},
+	"include": ["./**/*.ts"]
+}

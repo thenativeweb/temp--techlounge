@@ -7,7 +7,7 @@ docker run \
   -it \
   --init \
   -p 3000:3000 \
-  thenativeweb/eventsourcingdb:1.0.1 \
+  thenativeweb/eventsourcingdb:1.2.0 \
   run \
   --api-token secret \
   --data-directory-temporary \
