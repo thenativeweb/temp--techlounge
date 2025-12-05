@@ -17,6 +17,7 @@ import (
 	"github.com/thenativeweb/techlounge-to-do/api/ping"
 	"github.com/thenativeweb/techlounge-to-do/domain"
 	"github.com/thenativeweb/techlounge-to-do/logging"
+	"github.com/thenativeweb/techlounge-to-do/ui"
 )
 
 func main() {
@@ -142,6 +143,10 @@ func main() {
 	)
 
 	// UI
+	mux.Handle(
+		"GET /",
+		http.FileServer(http.FS(ui.Content)),
+	)
 
 	port := os.Getenv("PORT")
 	if port == "" {
