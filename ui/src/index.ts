@@ -1,1 +1,1 @@
-console.log('Hallo aus JavaScript!');
+import './components/Header.ts';
